@@ -1,4 +1,4 @@
-import axios from 'axios'
+import entryService from '../services/entryService'
 
 const AddPersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNewNumber}) => {
     const handleSubmit = (e) => {
@@ -13,12 +13,14 @@ const AddPersonForm = ({persons, setPersons, newName, setNewName, newNumber, set
           alert(`${newName} is already added to phonebook`)
         } else {
           const newEntry = {name: newName, number: newNumber}
-          setPersons(persons.concat(newEntry))
-          axios
-            .post('http://localhost:3001/entries', newEntry)
+          entryService
+            .addNew(newEntry)
+            .then(response => {
+              setPersons(persons.concat(response.data))
+              setNewName('')
+              setNewNumber('')
+            })
         }
-        setNewName('')
-        setNewNumber('')
       }
 
     return (
