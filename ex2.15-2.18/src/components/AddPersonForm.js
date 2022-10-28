@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const AddPersonForm = ({persons, setPersons, newName, setNewName, newNumber, setNewNumber}) => {
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -10,9 +12,13 @@ const AddPersonForm = ({persons, setPersons, newName, setNewName, newNumber, set
         if (alreadyOnPersons === true) {
           alert(`${newName} is already added to phonebook`)
         } else {
-          setPersons(persons.concat({name: newName, number: newNumber}))
+          const newEntry = {name: newName, number: newNumber}
+          setPersons(persons.concat(newEntry))
+          axios
+            .post('http://localhost:3001/entries', newEntry)
         }
         setNewName('')
+        setNewNumber('')
       }
 
     return (
